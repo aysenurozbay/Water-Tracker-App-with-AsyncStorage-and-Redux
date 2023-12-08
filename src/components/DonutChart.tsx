@@ -15,7 +15,7 @@ interface IDonutChartProps {
   color?: string
 }
 
-const DonutChart = ({ percentage = 0, radius = 40, strokeWidth = 10, duration = 1500, color, delay = 0, max = 1200 }: IDonutChartProps) => {
+const DonutChart = ({ percentage = 0, radius = 40, strokeWidth = 20, duration = 1500, color, delay = 0, max = 1200 }: IDonutChartProps) => {
   const halfCircle = radius + strokeWidth
   const circleCircumference = 2 * Math.PI * radius
 
@@ -67,13 +67,13 @@ const DonutChart = ({ percentage = 0, radius = 40, strokeWidth = 10, duration = 
             cy='50%'
             r={radius}
             fill='transparent'
-            stroke={color ? color : '#0077b6'}
+            stroke={color ? color : '#0d47a1'}
             strokeWidth={strokeWidth}
             strokeLinecap='round'
             strokeDashoffset={circleCircumference}
             strokeDasharray={circleCircumference}
           />
-          <Circle cx={'50%'} cy={'50%'} fill={'transparent'} stroke={'#ade8f4'} strokeWidth={strokeWidth} r={radius} strokeOpacity={0.2} />
+          <Circle cx={'50%'} cy={'50%'} fill={'transparent'} stroke={'#fff'} strokeWidth={strokeWidth} r={radius} strokeOpacity={0.2} />
         </G>
       </Svg>
       <AnimatedTextInput
@@ -81,7 +81,7 @@ const DonutChart = ({ percentage = 0, radius = 40, strokeWidth = 10, duration = 
         underlineColorAndroid='transparent'
         editable={false}
         defaultValue='0'
-        style={[StyleSheet.absoluteFillObject, { fontSize: radius / 2, color: color ? color : '#0077b6' }, styles.text]}
+        style={[StyleSheet.absoluteFillObject, { fontSize: radius / 2, color: color ? color : '#fff' }, styles.text]}
       />
     </View>
   )

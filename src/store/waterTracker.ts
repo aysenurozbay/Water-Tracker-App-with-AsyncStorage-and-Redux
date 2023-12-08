@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getData, updateData } from '../helpers/AsyncStorageHelper'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export interface WaterTrackerState {
   waterAmount: number
@@ -17,12 +18,19 @@ export const fetchInitialData = createAsyncThunk('waterTracker/fetchInitialData'
   }
 })
 
-export const updateAsyncStorageData = createAsyncThunk('yourSlice/setAsyncStorageData', async (data, { rejectWithValue }) => {
+export const updateAsyncStorageData = createAsyncThunk('waterAmount/updateAsyncStorageData', async (data: number, { rejectWithValue }) => {
   try {
     await updateData(data) // AsyncStorage'e veriyi kaydet
     return data
   } catch (error) {
     return rejectWithValue(error)
+  }
+})
+export const resetAsyncStorageData = createAsyncThunk('waterAmount/resetAsyncStorageData', async () => {
+  try {
+    await AsyncStorage.clear() // AsyncStorage'e veriyi kaydet
+  } catch (error) {
+    console.log('resetAsyncStorageData HATA', error)
   }
 })
 
@@ -38,6 +46,9 @@ export const waterTracker = createSlice({
     builder.addCase(fetchInitialData.fulfilled, (state, action) => {
       // AsyncStorage'den alınan veriyi kullanarak durumu güncelle
       state.waterAmount = action.payload
-    })
+    }),
+      builder.addCase(resetAsyncStorageData.fulfilled, state => {
+        state.waterAmount = 0
+      })
   },
 })

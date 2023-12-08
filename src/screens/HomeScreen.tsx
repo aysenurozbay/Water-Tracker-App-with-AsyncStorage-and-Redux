@@ -1,11 +1,10 @@
-import { Button, Dimensions, StyleSheet, Text, View } from 'react-native'
+import { Button, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import DonutChart from '../components/DonutChart'
 import GlassIcon from '../icons/GlassIcon'
-import { getData, storeData, updateData } from '../helpers/AsyncStorageHelper'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store'
-import { fetchInitialData, updateAsyncStorageData, waterTracker } from '../store/waterTracker'
+import { fetchInitialData, resetAsyncStorageData, updateAsyncStorageData, waterTracker } from '../store/waterTracker'
 
 const width = Dimensions.get('window').width
 
@@ -17,6 +16,9 @@ const HomeScreen = () => {
 
     dispatch(updateAsyncStorageData(amount))
   }
+  const handleResetButton = async () => {
+    dispatch(resetAsyncStorageData())
+  }
 
   const waterAmount = useSelector((state: RootState) => state.waterTracker.waterAmount)
 
@@ -26,8 +28,16 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Water Tracker </Text>
-      <DonutChart delay={100} max={2000} radius={130} percentage={waterAmount} />
+      <View>
+        <Text style={styles.title}>Water Tracker </Text>
+        <Text style={styles.subtitle}>Keep Drinking </Text>
+      </View>
+      <View style={{ alignItems: 'center' }}>
+        <DonutChart delay={100} max={2000} radius={150} percentage={waterAmount} />
+        <TouchableOpacity onPress={() => handleResetButton()} activeOpacity={0.2} style={{ marginVertical: 10 }}>
+          <Text style={styles.resetText}>SIFIRLA</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.buttonContainer}>
         <Text style={styles.buttonText} onPress={() => handlePress(-200)}>
           -
@@ -48,15 +58,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    backgroundColor: '#001d3d',
+    backgroundColor: '#48cae4',
   },
   buttonContainer: {
     flexDirection: 'row',
     position: 'absolute',
     bottom: 30,
-    width: width - 40,
+    width: width,
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
   },
   button: {
     borderRadius: 50,
@@ -65,7 +75,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#0077b6',
+    color: '#fff',
     fontSize: 30,
     textAlign: 'center',
   },
@@ -74,5 +84,16 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 40,
     fontFamily: 'Roboto',
+  },
+  subtitle: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 17,
+    fontWeight: '300',
+  },
+  resetText: {
+    color: '#fff',
+    textDecorationLine: 'underline',
+    fontSize: 17,
   },
 })
